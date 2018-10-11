@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider, Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { ApolloProvider } from 'react-apollo';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import Post from './Posts/Post';
+import Posts from './Posts/Posts';
+import NewPost from './Posts/NewPost';
 import logo from './logo.svg';
 import './App.css';
 
@@ -9,17 +12,6 @@ import './App.css';
 const client = new ApolloClient({
   uri: 'https://api-uswest.graphcms.com/v1/cjjoov78z2j9t01gclcnhwlb9/master'
 });
-
-// Writing our query
-const POSTS_QUERY = gql`
-  query allPosts {
-    posts {
-      id
-      title
-      body
-    }
-  }
-`;
 
 // Running our query outside of React
 // client
@@ -33,21 +25,23 @@ class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
-          </header>
+        <Router>
+          <div className="App">
+            <header className="App-header">
+              <Link to={'/'}>
+                <h1 className="App-title">GraphQL is Great</h1>
+              </Link>
+            </header>
 
-          {/* How to write Apollo queries in React */}
-          <Query query={POSTS_QUERY}>
-            {({ loading, data }) => {
-              if (loading) return 'Loading...';
-              const { posts } = data;
-              return posts.map(post => <h1>{post.title}</h1>);
-            }}
-          </Query>
-        </div>
+            <Link to={'/post/new'}>New Post</Link>
+
+            <Switch>
+              <Route exact path="/" component={Posts} />
+              <Route exact path="/post/new" component={NewPost} />
+              <Route path="/post/:id" component={Post} />
+            </Switch>
+          </div>
+        </Router>
       </ApolloProvider>
     );
   }
