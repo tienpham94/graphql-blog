@@ -8,9 +8,16 @@ import NewPost from './Posts/NewPost';
 import logo from './logo.svg';
 import './App.css';
 
+const defaultState = {
+  isEditMode: false
+};
+
 // Connecting out site to the GraphQL API
 const client = new ApolloClient({
-  uri: 'https://api-uswest.graphcms.com/v1/cjjoov78z2j9t01gclcnhwlb9/master'
+  uri: 'https://api-uswest.graphcms.com/v1/cjjoov78z2j9t01gclcnhwlb9/master',
+  clientState: {
+    defaults: defaultState
+  }
 });
 
 // Running our query outside of React
@@ -32,14 +39,13 @@ class App extends Component {
                 <h1 className="App-title">GraphQL is Great</h1>
               </Link>
             </header>
-
-            <Link to={'/post/new'}>New Post</Link>
-
-            <Switch>
-              <Route exact path="/" component={Posts} />
-              <Route exact path="/post/new" component={NewPost} />
-              <Route path="/post/:id" component={Post} />
-            </Switch>
+            <main>
+              <Switch>
+                <Route exact path="/" component={Posts} />
+                <Route exact path="/post/new" component={NewPost} />
+                <Route path="/post/:id" component={Post} />
+              </Switch>
+            </main>
           </div>
         </Router>
       </ApolloProvider>

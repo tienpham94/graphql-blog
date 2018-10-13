@@ -60,7 +60,7 @@ export default class PostForm extends Component {
           value={body}
           placeholder="body"
         />
-        <button>Submit</button>
+        <button className="button">Submit</button>
       </form>
     );
   }
